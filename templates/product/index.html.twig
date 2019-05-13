@@ -35,7 +35,7 @@
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }}</td>
                     <td>
-                        <a href="/product/" class="btn btn-sm btn-warning"><i class="fa fa-eye"></i></a>
+                        <a href="{{ path("product_view", {"id": product.id}) }}" class="btn btn-sm btn-warning"><i class="fa fa-eye"></i></a>
                         <a href="{{ path("product_edit", {"id": product.id}) }}" class="btn btn-sm btn-success"><i class="fa fa-pencil-alt"></i></a>
                         <a href="/product/" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                     </td>

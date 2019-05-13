@@ -89,4 +89,23 @@ class ProductController extends AbstractController
             "form" => $form->createView()
         ]);
     }
+
+    /**     
+     *
+     * @param Request $request
+     * @param [type] $id
+     * @return void
+     * 
+     * @Route("/product/view/{id}", name="product_view")
+     */
+    public function view(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository(Product::class)
+            ->find($id);
+
+        return $this->render("product/view.html.twig", [
+            "product" => $product
+        ]);
+    }
 }
