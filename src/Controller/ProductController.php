@@ -108,4 +108,33 @@ class ProductController extends AbstractController
             "product" => $product
         ]);
     }
+
+    /**     
+     *
+     * @param Request $request
+     * @param [type] $id
+     * @return void
+     * 
+     * @Route("/product/delete/{id}", name="product_delete")
+     */
+    public function delete(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository(Product::class)
+            ->find($id);
+        
+            if (!$product) {
+                $message = "Product not found!";
+                $type = "warning";
+            } else {
+                $em->remove($product);
+                $em->flush();
+
+                $message = "Product has been deleted with success!";
+                $type = "success";                
+            }
+
+            $this->get("session")->getFlashBag()->set($type, $message);
+            return $this->redirectToRoute("product_list");
+    }
 }

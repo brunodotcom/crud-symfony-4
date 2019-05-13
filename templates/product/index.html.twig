@@ -10,6 +10,12 @@
         </div>        
     {% endfor %}
 
+    {% for flashMessage in app.session.flashbag.get('warning') %}
+        <div class="alert alert-warning">
+            {{ flashMessage }}
+        </div>        
+    {% endfor %}    
+
     <h1>Products List</h1>
     <hr>
     <div class="row">
@@ -37,10 +43,10 @@
                     <td>
                         <a href="{{ path("product_view", {"id": product.id}) }}" class="btn btn-sm btn-warning"><i class="fa fa-eye"></i></a>
                         <a href="{{ path("product_edit", {"id": product.id}) }}" class="btn btn-sm btn-success"><i class="fa fa-pencil-alt"></i></a>
-                        <a href="/product/" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="{{ path("product_delete", {"id": product.id}) }}" class="btn btn-sm btn-danger bt-delete-product"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>                
-            {% endfor %}
+            {% endfor %}            
         </tbody>
     </table>
 {% endblock %}
