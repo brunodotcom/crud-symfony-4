@@ -39,7 +39,7 @@
                 <tr>
                     <td>{{ product.id }}</td>
                     <td>{{ product.name }}</td>
-                    <td>{{ product.price }}</td>
+                    <td>$ {{ product.price|number_format(2, ",", ".") }}</td>
                     <td>
                         <a href="{{ path("product_view", {"id": product.id}) }}" class="btn btn-sm btn-warning"><i class="fa fa-eye"></i></a>
                         <a href="{{ path("product_edit", {"id": product.id}) }}" class="btn btn-sm btn-success"><i class="fa fa-pencil-alt"></i></a>

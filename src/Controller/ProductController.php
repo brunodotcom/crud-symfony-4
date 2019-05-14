@@ -4,14 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\ProductType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class ProductController extends AbstractController
 {
     /**
      * @Route("/product", name="product_list")
+     * @Template("product/index.html.twig")
      */
     public function index()
     {
@@ -20,9 +22,9 @@ class ProductController extends AbstractController
         $products = $em->getRepository(Product::class)
             ->findAll();
 
-        return $this->render("product/index.html.twig", [
+        return [
             "products" => $products
-        ]);
+        ];
     }
 
     /**     
@@ -31,6 +33,7 @@ class ProductController extends AbstractController
      * @return void
      * 
      * @Route("/product/register", name="product_register")
+     * @Template("product/create.html.twig")
      */
     public function create(Request $request)
     {
@@ -43,17 +46,15 @@ class ProductController extends AbstractController
 
             $em->persist($product);
             $em->flush();
-
-            $this->get('session')
-                ->getFlashBag()
-                ->set('success', 'Product has been saved with success!');
+            
+            $this->addFlash("success", "Product has been saved with success!");
 
             return $this->redirectToRoute("product_list");
         }
 
-        return $this->render("product/create.html.twig", [
+        return [
             "form" => $form->createView()
-        ]);
+        ];
     }
 
     /**     
@@ -62,6 +63,7 @@ class ProductController extends AbstractController
      * @return void
      * 
      * @Route("product/edit/{id}", name="product_edit")
+     * @Template("product/update.html.twig")
      */
     public function update(Request $request, $id)
     {
@@ -74,20 +76,17 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($product);
-            $em->flush();
+            $em->flush();            
 
-            $this->get("session")->getFlashBag()->set(
-                "success", 
-                "Product ".$product->getName()." has been updated with success!"
-            );
+            $this->addFlash("success", "Product ".$product->getName()." has been updated with success!");
 
             return $this->redirectToRoute("product_list");
         }
 
-        return $this->render("product/update.html.twig", [
+        return [
             "product" => $product,
             "form" => $form->createView()
-        ]);
+        ];
     }
 
     /**     
@@ -97,6 +96,7 @@ class ProductController extends AbstractController
      * @return void
      * 
      * @Route("/product/view/{id}", name="product_view")
+     * @Template("product/view.html.twig")
      */
     public function view(Request $request, $id)
     {
@@ -104,9 +104,9 @@ class ProductController extends AbstractController
         $product = $em->getRepository(Product::class)
             ->find($id);
 
-        return $this->render("product/view.html.twig", [
+        return [
             "product" => $product
-        ]);
+        ];
     }
 
     /**     
@@ -133,8 +133,8 @@ class ProductController extends AbstractController
                 $message = "Product has been deleted with success!";
                 $type = "success";                
             }
-
-            $this->get("session")->getFlashBag()->set($type, $message);
+            
+            $this->addFlash($type, $message);
             return $this->redirectToRoute("product_list");
     }
 }
